@@ -1,6 +1,7 @@
 *.log
 *.tmp
 *.swp
+*.editorconfig
 .DS_Store
 Thumbs.db
 
