@@ -1,4 +1,5 @@
-﻿using MaximaTechProductAPI.Core.Entities;
+﻿using MaximaTechProductAPI.Application.Dtos;
+using MaximaTechProductAPI.Core.Entities;
 using MaximaTechProductAPI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,14 @@ namespace MaximaTechProductAPI.Application.Controllers
         public async Task<IActionResult> ObterTodos()
         {
             var departamentos = await _departamentoRepository.obterTodos();
-            return Ok(departamentos);
+
+            var lista = departamentos.Select(d => new DepartamentoDto
+            {
+                Codigo = d.Codigo,
+                Descricao = d.Descricao
+            });
+
+            return Ok(lista);
         }
 
         [HttpGet("{id}")]
@@ -30,27 +38,44 @@ namespace MaximaTechProductAPI.Application.Controllers
             if (departamento == null)
                 return NotFound();
 
-            return Ok(departamento);
+            var dto = new DepartamentoDto
+            {
+                Codigo = departamento.Codigo,
+                Descricao = departamento.Descricao
+            };
+
+            return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Adicionar([FromBody] Departamento departamento)
+        public async Task<IActionResult> Create([FromBody] DepartamentoDto dto)
         {
-            departamento.Id = Guid.NewGuid();
+            var departamento = new Departamento
+            {
+                Id = Guid.NewGuid(),
+                Codigo = dto.Codigo,
+                Descricao = dto.Descricao,
+                Status = true
+            };
+
             await _departamentoRepository.Adicionar(departamento);
-            return CreatedAtAction(nameof(obter), new { id = departamento.Id }, departamento);
+
+            return CreatedAtAction(nameof(obter), new { id = departamento.Id }, dto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(Guid id, [FromBody] Departamento departamento)
+        public async Task<IActionResult> Atualizar(Guid id, [FromBody] DepartamentoDto dto)
         {
             var existing = await _departamentoRepository.obter(id);
             if (existing == null)
                 return NotFound();
 
-            departamento.Id = id;
-            await _departamentoRepository.Atualizar(departamento);
-            return Ok(departamento);
+            existing.Codigo = dto.Codigo;
+            existing.Descricao = dto.Descricao;
+
+            await _departamentoRepository.Atualizar(existing);
+
+            return Ok(dto);
         }
 
         [HttpDelete("{id}")]
