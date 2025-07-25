@@ -39,7 +39,7 @@ namespace MaximaTechProductAPI.Infrastructure.Database
                 ExecuteScriptFile(conexao, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database/Schema/02_create_tables.sql"));
                 ExecuteScriptFile(conexao, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database/Seed/03_seed_departamentos.sql"));
 
-                Console.WriteLine("Banco de dados inicializado com sucesso.");
+                //Console.WriteLine("Banco de dados inicializado com sucesso.");
             }
         }
 

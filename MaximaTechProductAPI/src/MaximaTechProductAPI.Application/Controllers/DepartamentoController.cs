@@ -22,13 +22,7 @@ namespace MaximaTechProductAPI.Application.Controllers
         {
             var departamentos = await _departamentoRepository.obterTodos();
 
-            var lista = departamentos.Select(d => new DepartamentoDto
-            {
-                Codigo = d.Codigo,
-                Descricao = d.Descricao
-            });
-
-            return Ok(lista);
+            return Ok(departamentos);
         }
 
         [HttpGet("{id}")]
@@ -38,44 +32,38 @@ namespace MaximaTechProductAPI.Application.Controllers
             if (departamento == null)
                 return NotFound();
 
-            var dto = new DepartamentoDto
-            {
-                Codigo = departamento.Codigo,
-                Descricao = departamento.Descricao
-            };
-
-            return Ok(dto);
+            return Ok(departamento);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] DepartamentoDto dto)
+        public async Task<IActionResult> Adicionar([FromBody] Departamento departamento)
         {
-            var departamento = new Departamento
+            var add = new Departamento
             {
                 Id = Guid.NewGuid(),
-                Codigo = dto.Codigo,
-                Descricao = dto.Descricao,
+                Codigo = departamento.Codigo,
+                Descricao = departamento.Descricao,
                 Status = true
             };
 
             await _departamentoRepository.Adicionar(departamento);
 
-            return CreatedAtAction(nameof(obter), new { id = departamento.Id }, dto);
+            return CreatedAtAction(nameof(obter), new { id = departamento.Id }, departamento);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(Guid id, [FromBody] DepartamentoDto dto)
+        public async Task<IActionResult> Atualizar(Guid id, [FromBody] Departamento departamento)
         {
             var existing = await _departamentoRepository.obter(id);
             if (existing == null)
                 return NotFound();
 
-            existing.Codigo = dto.Codigo;
-            existing.Descricao = dto.Descricao;
+            existing.Codigo = departamento.Codigo;
+            existing.Descricao = departamento.Descricao;
 
             await _departamentoRepository.Atualizar(existing);
 
-            return Ok(dto);
+            return Ok(departamento);
         }
 
         [HttpDelete("{id}")]

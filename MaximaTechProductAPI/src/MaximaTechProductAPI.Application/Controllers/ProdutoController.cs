@@ -21,61 +21,47 @@ namespace MaximaTechProductAPI.Application.Controllers
         public async Task<IActionResult> ObterTodos()
         {
             var produtos = await _produtoRepository.obterTodos();
-            var lista = produtos.Select(p => new ProdutoDto
-            {
-                Codigo = p.Codigo,
-                Descricao = p.Descricao,
-                DepartamentoId = p.DepartamentoId,
-                Preco = p.Preco
-            });
 
-            return Ok(lista);
+            return Ok(produtos);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Obter(Guid id)
         {
             var produto = await _produtoRepository.obter(id);
+            
             if (produto == null) return NotFound();
 
-            var dto = new ProdutoDto
-            {
-                Codigo = produto.Codigo,
-                Descricao = produto.Descricao,
-                DepartamentoId = produto.DepartamentoId,
-                Preco = produto.Preco
-            };
-
-            return Ok(dto);
+            return Ok(produto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Adicionar([FromBody] ProdutoDto dto)
+        public async Task<IActionResult> Adicionar([FromBody] Produto produto)
         {
-            var produto = new Produto
+            var add = new Produto
             {
                 Id = Guid.NewGuid(),
-                Codigo = dto.Codigo,
-                Descricao = dto.Descricao,
-                DepartamentoId = dto.DepartamentoId,
-                Preco = dto.Preco,
+                Codigo = produto.Codigo,
+                Descricao = produto.Descricao,
+                DepartamentoId = produto.DepartamentoId,
+                Preco = produto.Preco,
                 Status = true
             };
 
             await _produtoRepository.Adicionar(produto);
-            return CreatedAtAction(nameof(Obter), new { id = produto.Id }, dto);
+            return CreatedAtAction(nameof(Obter), new { id = produto.Id }, produto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] ProdutoDto dto)
+        public async Task<IActionResult> Put(Guid id, [FromBody] Produto produto)
         {
             var existente = await _produtoRepository.obter(id);
             if (existente == null) return NotFound();
 
-            existente.Codigo = dto.Codigo;
-            existente.Descricao = dto.Descricao;
-            existente.DepartamentoId = dto.DepartamentoId;
-            existente.Preco = dto.Preco;
+            existente.Codigo = produto.Codigo;
+            existente.Descricao = produto.Descricao;
+            existente.DepartamentoId = produto.DepartamentoId;
+            existente.Preco = produto.Preco;
 
             await _produtoRepository.Atualizar(existente);
             return Ok(existente);
