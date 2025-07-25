@@ -36,7 +36,7 @@ export class HomeComponent {
   }
 
   inativar(produto: Produto) {
-    if (!confirm(`Deseja realmente inativar o produto "${produto.descricao}"?`)) return;
+    if (!confirm(`Deseja realmente inativar o produto "${produto.Descricao}"?`)) return;
 
     this.apiService.inativarProduto(produto.id).subscribe({
       next: () => this.carregarProdutos(),

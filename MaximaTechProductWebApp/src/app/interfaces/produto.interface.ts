@@ -1,8 +1,8 @@
 export interface Produto{
     id: string;
-    codigo: string;
-    descricao: string;
-    preco: number;
-    departamentoId: string;
+    Codigo: string;
+    Descricao: string;
+    Preco: number;
+    Departamento: string;
     status: boolean;
 }

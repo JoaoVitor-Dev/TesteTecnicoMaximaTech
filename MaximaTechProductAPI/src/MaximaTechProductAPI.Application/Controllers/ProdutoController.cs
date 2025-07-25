@@ -1,4 +1,5 @@
-﻿using MaximaTechProductAPI.Core.Entities;
+﻿using MaximaTechProductAPI.Application.Dtos;
+using MaximaTechProductAPI.Core.Entities;
 using MaximaTechProductAPI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,15 @@ namespace MaximaTechProductAPI.Application.Controllers
         public async Task<IActionResult> ObterTodos()
         {
             var produtos = await _produtoRepository.obterTodos();
+
+            var produtosDto = produtos.Select(p => new ProdutoDto
+            {
+                id = p.Id.ToString(),
+                codigo = p.Codigo,
+                descricao = p.Descricao,
+                departamento = p.Departamento,
+                preco = p.Preco
+            });
 
             return Ok(produtos);
         }

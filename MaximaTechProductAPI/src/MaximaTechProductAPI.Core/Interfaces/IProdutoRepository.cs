@@ -9,7 +9,7 @@ namespace MaximaTechProductAPI.Core.Interfaces
 {
     public interface IProdutoRepository
     {
-        Task<IEnumerable<Produto>> obterTodos();
+        Task<IEnumerable<dynamic>> obterTodos();
         Task<Produto?> obter(Guid id);
         Task Adicionar(Produto produto);
         Task Atualizar(Produto produto);

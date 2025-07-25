@@ -16,10 +16,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let produto of produtos">
-        <td>{{ produto.codigo }}</td>
-        <td>{{ produto.descricao }}</td>
-        <td>{{ produto.departamentoId }}</td>
-        <td>R$ {{ produto.preco | number:'1.2-2' }}</td>
+        <td>{{ produto.Codigo }}</td>
+        <td>{{ produto.Descricao }}</td>
+        <td>{{ produto.Departamento }}</td>
+        <td>R$ {{ produto.Preco | number:'1.2-2' }}</td>
         <td>
           <button class="btn editar" (click)="editar(produto)">Editar</button>
           <button class="btn inativar" (click)="inativar(produto)">Inativar</button>

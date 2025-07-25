@@ -79,10 +79,14 @@ namespace MaximaTechProductAPI.Infrastructure.Repository
             return await _connection.QueryFirstOrDefaultAsync<Produto>(sql, new { Id = id });
         }
 
-        public async Task<IEnumerable<Produto>> obterTodos()
+        public async Task<IEnumerable<dynamic>> obterTodos()
         {
-            var sql = "SELECT * FROM produto WHERE Status = 1;";
-            return await _connection.QueryAsync<Produto>(sql);
+            var sql = @"SELECT p.Id, p.Codigo, p.Descricao, d.Descricao AS Departamento, p.Preco
+                FROM produto p
+                INNER JOIN departamento d ON p.DepartamentoId = d.Id
+                WHERE p.Status = 1";
+            
+            return await _connection.QueryAsync(sql);
         }
     }
 }

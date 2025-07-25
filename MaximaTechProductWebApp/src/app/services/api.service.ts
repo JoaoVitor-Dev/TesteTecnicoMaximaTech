@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-private port = 44371;  
+private port = 7235;  
 
 // private baseUrl = 'https://localhost:5001/api'; 
 
