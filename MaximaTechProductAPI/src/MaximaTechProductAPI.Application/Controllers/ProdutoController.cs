@@ -1,5 +1,4 @@
-﻿using MaximaTechProductAPI.Application.Dtos;
-using MaximaTechProductAPI.Core.Entities;
+﻿using MaximaTechProductAPI.Core.Entities;
 using MaximaTechProductAPI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +10,12 @@ namespace MaximaTechProductAPI.Application.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IDepartamentoRepository _departamentoRepository;
 
-        public ProdutoController(IProdutoRepository produtoRepository)
+        public ProdutoController(IProdutoRepository produtoRepository,  IDepartamentoRepository departamentoRepository)
         {
             _produtoRepository = produtoRepository;
+            _departamentoRepository = departamentoRepository;
         }
 
         [HttpGet]
@@ -40,23 +41,39 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Adicionar([FromBody] Produto produto)
         {
-            await _produtoRepository.Adicionar(produto);
-            
-            return CreatedAtAction(nameof(Obter), new { id = produto.Id }, produto);
+            try
+            {
+                produto.Id = Guid.NewGuid();
+                produto.Status = true;
+                
+                await _produtoRepository.Adicionar(produto);
+                return CreatedAtAction(nameof(Obter), new { id = produto.Id }, produto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Atualizar(Guid id, [FromBody] Produto produto)
         {
             var existente = await _produtoRepository.obter(id);
-            if (existente == null) return NotFound();
-
+            if (existente == null)
+                return NotFound();
+            
+            var departamento = await _departamentoRepository.obter(produto.DepartamentoId);
+            if (departamento == null)
+                return BadRequest("Departamento informado não identificado");
+            
             existente.Codigo = produto.Codigo;
             existente.Descricao = produto.Descricao;
             existente.DepartamentoId = produto.DepartamentoId;

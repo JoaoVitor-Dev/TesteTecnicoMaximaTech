@@ -1,5 +1,4 @@
-﻿using MaximaTechProductAPI.Application.Dtos;
-using MaximaTechProductAPI.Core.Entities;
+﻿using MaximaTechProductAPI.Core.Entities;
 using MaximaTechProductAPI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

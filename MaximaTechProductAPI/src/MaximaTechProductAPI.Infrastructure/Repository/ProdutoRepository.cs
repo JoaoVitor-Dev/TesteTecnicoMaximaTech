@@ -22,6 +22,14 @@ namespace MaximaTechProductAPI.Infrastructure.Repository
 
         public async Task Adicionar(Produto produto)
         {
+            var departamentoExiste = await _connection.ExecuteScalarAsync<bool>(
+                "SELECT EXISTS(SELECT 1 FROM departamento WHERE Id = @Id AND Status = 1);",
+                new { Id = produto.DepartamentoId }
+            );
+            
+            if (!departamentoExiste)
+                throw new Exception("Departamento informado não existe ou está inativo.");
+            
             var sql = @"
                 INSERT INTO produto (Id, Codigo, Descricao, DepartamentoId, Preco, Status)
                 VALUES (@Id, @Codigo, @Descricao, @DepartamentoId, @Preco, @Status);";
