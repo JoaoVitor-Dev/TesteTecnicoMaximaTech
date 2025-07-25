@@ -18,6 +18,8 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObterTodos()
         {
             var produtos = await _produtoRepository.obterTodos();
@@ -26,6 +28,8 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Obter(Guid id)
         {
             var produto = await _produtoRepository.obter(id);
@@ -36,24 +40,19 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Adicionar([FromBody] Produto produto)
         {
-            var add = new Produto
-            {
-                Id = Guid.NewGuid(),
-                Codigo = produto.Codigo,
-                Descricao = produto.Descricao,
-                DepartamentoId = produto.DepartamentoId,
-                Preco = produto.Preco,
-                Status = true
-            };
-
             await _produtoRepository.Adicionar(produto);
+            
             return CreatedAtAction(nameof(Obter), new { id = produto.Id }, produto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] Produto produto)
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Atualizar(Guid id, [FromBody] Produto produto)
         {
             var existente = await _produtoRepository.obter(id);
             if (existente == null) return NotFound();
@@ -68,7 +67,9 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Inativar(Guid id)
         {
             var existente = await _produtoRepository.obter(id);
             if (existente == null) return NotFound();

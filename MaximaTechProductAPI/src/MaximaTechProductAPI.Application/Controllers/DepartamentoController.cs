@@ -18,6 +18,8 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObterTodos()
         {
             var departamentos = await _departamentoRepository.obterTodos();
@@ -26,6 +28,8 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> obter(Guid id)
         {
             var departamento = await _departamentoRepository.obter(id);
@@ -36,22 +40,18 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Adicionar([FromBody] Departamento departamento)
         {
-            var add = new Departamento
-            {
-                Id = Guid.NewGuid(),
-                Codigo = departamento.Codigo,
-                Descricao = departamento.Descricao,
-                Status = true
-            };
-
             await _departamentoRepository.Adicionar(departamento);
 
             return CreatedAtAction(nameof(obter), new { id = departamento.Id }, departamento);
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Atualizar(Guid id, [FromBody] Departamento departamento)
         {
             var existing = await _departamentoRepository.obter(id);
@@ -67,6 +67,8 @@ namespace MaximaTechProductAPI.Application.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Inativar(Guid id)
         {
             var existing = await _departamentoRepository.obter(id);
