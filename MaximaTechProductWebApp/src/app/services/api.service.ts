@@ -28,6 +28,7 @@ obterProdutos(): Observable<Produto[]> {
 }
 
 adicionarProduto(produto: Produto): Observable<Produto> {
+    console.log("adicionar...")
     return this.http.post<Produto>(`${this.baseUrl}/produto`, produto);
 }
 

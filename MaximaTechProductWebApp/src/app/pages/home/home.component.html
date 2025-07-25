@@ -28,3 +28,11 @@
     </tbody>
   </table>
 </div>
+
+<app-produto 
+  *ngIf="mostrarModal"
+  [produtoParaEditar]="produtoEmEdicao"
+  (fechar)="fecharModal()"
+  (salvo)="carregarProdutos()">
+</app-produto>
+

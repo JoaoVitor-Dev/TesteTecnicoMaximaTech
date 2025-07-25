@@ -65,3 +65,17 @@
 .btn.inativar:hover {
   background-color: #bb086a;
 }
+
+app-produto {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 1000;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+}

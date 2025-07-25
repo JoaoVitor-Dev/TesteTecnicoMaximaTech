@@ -4,5 +4,5 @@ export interface Produto{
     Descricao: string;
     Preco: number;
     Departamento: string;
-    status: boolean;
+    status: number;
 }
