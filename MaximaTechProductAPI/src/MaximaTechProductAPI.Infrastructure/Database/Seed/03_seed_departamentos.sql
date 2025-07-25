@@ -5,3 +5,4 @@ INSERT INTO Departamento (Id, Codigo, Descricao, Status) VALUES
 (UUID(), '020', 'CONGELADOS', true),
 (UUID(), '030', 'LATICINIOS', true),
 (UUID(), '040', 'VEGETAIS', true);
+
