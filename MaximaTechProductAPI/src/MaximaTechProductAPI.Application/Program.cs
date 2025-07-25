@@ -19,6 +19,17 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 var dbInitializer = new DatabaseInitializer(connectionString);
 dbInitializer.Initialize();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder
+            .AllowAnyOrigin()     
+            .AllowAnyMethod()     
+            .AllowAnyHeader();    
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +38,8 @@ builder.Services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 var app = builder.Build();
+
+app.UseCors("CorsPolicy"); 
 
 if (app.Environment.IsDevelopment())
 {

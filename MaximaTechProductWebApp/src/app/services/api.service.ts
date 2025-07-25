@@ -9,9 +9,15 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-private baseUrl = 'https://localhost:5001/api'; 
+private port = 44371;  
 
-constructor(private http: HttpClient) { }
+// private baseUrl = 'https://localhost:5001/api'; 
+
+private baseUrl = `https://localhost:${this.port}/api`; 
+
+constructor(private http: HttpClient) { 
+  
+}
 
 obterDepartamentos():Observable<Departamento[]>{
   return this.http.get<Departamento[]>(`${this.baseUrl}/departamento`)
