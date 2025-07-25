@@ -1,0 +1,18 @@
+USE MaximaTechDB;
+
+CREATE TABLE IF NOT EXISTS Departamento (
+    Id CHAR(36) NOT NULL PRIMARY KEY,
+    Codigo VARCHAR(10) NOT NULL,
+    Descricao VARCHAR(100) NOT NULL,
+    Status BOOLEAN NOT NULL DEFAULT true
+);
+
+CREATE TABLE IF NOT EXISTS Produto (
+    Id CHAR(36) NOT NULL PRIMARY KEY,
+    Codigo VARCHAR(10) NOT NULL,
+    Descricao VARCHAR(100) NOT NULL,
+    DepartamentoId CHAR(36) NOT NULL,
+    Preco DECIMAL(10,2) NOT NULL,
+    Status BOOLEAN NOT NULL DEFAULT true,
+    FOREIGN KEY (DepartamentoId) REFERENCES Departamento(Id)
+);

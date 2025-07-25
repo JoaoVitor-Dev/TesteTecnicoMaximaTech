@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaximaTechProductAPI.Application.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class ProdutoController : ControllerBase

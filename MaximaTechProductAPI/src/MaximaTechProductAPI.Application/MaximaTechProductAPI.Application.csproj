@@ -16,4 +16,8 @@
     <ProjectReference Include="..\MaximaTechProductAPI.Infrastructure\MaximaTechProductAPI.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
