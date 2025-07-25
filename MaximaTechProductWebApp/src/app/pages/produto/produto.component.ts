@@ -32,6 +32,7 @@ export class ProdutoComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    
     this.form = this.fb.group({
       codigo: ['', Validators.required],
       descricao: ['', Validators.required],
@@ -39,52 +40,106 @@ export class ProdutoComponent implements OnInit, OnChanges {
       preco: [0, [Validators.required, Validators.min(0.01)]]
     });
 
-    this.api.obterDepartamentos().subscribe(deps => this.departamentos = deps);
-
-    if (this.produtoParaEditar) {
-      this.titulo = 'Editar Produto';
-      this.form.patchValue(this.produtoParaEditar);
-      this.produtoId = this.produtoParaEditar.id;
-    }
+    this.api.obterDepartamentos().subscribe(deps => {
+      this.departamentos = deps;
+      
+      if (this.produtoParaEditar) {
+        this.carregarDadosProduto();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['produtoParaEditar'] && this.form) {
+    if (changes['produtoParaEditar']) {
       if (this.produtoParaEditar) {
-        this.titulo = 'Editar Produto';
-        this.form.patchValue(this.produtoParaEditar);
-        this.produtoId = this.produtoParaEditar.id;
+        if (this.departamentos.length > 0) {
+          this.carregarDadosProduto();
+        }
       } else {
-        this.titulo = 'Adicionar Produto';
-        this.form.reset();
-        this.form.patchValue({ preco: 0 });
+        this.resetarFormulario();
       }
     }
   }
 
- salvar() {
-  if (this.form.invalid) return;
+  private carregarDadosProduto() {
+    if (!this.form || !this.produtoParaEditar) {
+      return;
+    }
+ 
+    this.titulo = 'Editar Produto';
+    this.produtoId = this.produtoParaEditar.Id;
 
-  const produto: Produto = {
-    ...this.form.value,
-    status: true 
-  };
+    const departamentoId = this.buscarIdDepartamento(this.produtoParaEditar.Departamento);
+    
+    const dadosFormulario = {
+      codigo: this.produtoParaEditar.Codigo,
+      descricao: this.produtoParaEditar.Descricao,
+      departamentoId: departamentoId,
+      preco: this.produtoParaEditar.Preco
+    };
 
-  const operacao = this.produtoParaEditar
-    ? this.api.atualizarProduto(this.produtoParaEditar.id, produto)
-    : this.api.adicionarProduto(produto);
-
-  operacao.subscribe({
-    next: () => {
-      this.salvo.emit();
-      this.fechar.emit();
-    },
-    error: (err) => console.error('Erro ao salvar produto:', err)
-  });
-}
-
-  cancelar() {
-     this.fechar.emit();
+    this.form.patchValue(dadosFormulario);
   }
 
+  private buscarIdDepartamento(valorDepartamento: string): string {
+
+    const porId = this.departamentos.find(dep => dep.id === valorDepartamento);
+    if (porId) {
+      return valorDepartamento;
+    }
+    
+    const porNome = this.departamentos.find(dep => 
+      dep.descricao === valorDepartamento ||
+      dep.descricao?.toLowerCase() === valorDepartamento?.toLowerCase()
+    );
+    
+    const idEncontrado = porNome ? porNome.id : '';
+    
+    return idEncontrado;
+  }
+
+  private resetarFormulario() {
+    if (!this.form) {
+      return;
+    }
+
+    this.titulo = 'Adicionar Produto';
+    this.produtoId = '';
+    this.form.reset();
+    this.form.patchValue({ preco: 0 });
+  }
+
+  salvar() {
+    if (this.form.invalid) {
+      return;
+    }
+
+const produtoPayload = {
+  codigo: this.form.value.codigo,
+  status: true,
+  descricao: this.form.value.descricao,
+  departamentoId: this.form.value.departamentoId,
+  preco: this.form.value.preco
+};
+
+//console.log('Payload:', produtoPayload);
+
+const operacao = this.produtoParaEditar
+  ? this.api.atualizarProduto(this.produtoParaEditar.Id, produtoPayload)
+  : this.api.adicionarProduto(produtoPayload);
+
+    operacao.subscribe({
+      next: () => {
+        this.salvo.emit();
+        this.fechar.emit();
+      },
+      error: (err) => {
+        console.error('Erro ao salvar produto:', err);
+      }
+    });
+  }
+
+  cancelar() {
+    this.fechar.emit();
+  }
 }

@@ -29,10 +29,9 @@
   </table>
 </div>
 
-<app-produto 
+<app-produto
   *ngIf="mostrarModal"
   [produtoParaEditar]="produtoEmEdicao"
+  (salvo)="carregarProdutos()"
   (fechar)="fecharModal()"
-  (salvo)="carregarProdutos()">
-</app-produto>
-
+></app-produto>

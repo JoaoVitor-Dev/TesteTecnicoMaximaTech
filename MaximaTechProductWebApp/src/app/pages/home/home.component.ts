@@ -26,33 +26,45 @@ export class HomeComponent {
 
   carregarProdutos() {
     this.apiService.obterProdutos().subscribe({
-      next: (data) => this.produtos = data,
-      error: (error) => console.error('Erro ao carregar produtos:', error)
+      next: (data) => {
+        this.produtos = data;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
     });
   }
 
   adicionar() {
-    this.produtoEmEdicao = undefined; 
+    this.produtoEmEdicao = null;
     this.mostrarModal = true;
   }
 
   editar(produto: Produto) {
-     this.produtoEmEdicao = produto;
-     this.mostrarModal = true;
+    
+    this.produtoEmEdicao = produto;
+    this.mostrarModal = true;
+    
+    setTimeout(() => {
+    }, 100);
   }
 
   inativar(produto: Produto) {
     if (!confirm(`Deseja realmente inativar o produto "${produto.Descricao}"?`)) return;
-
-    this.apiService.inativarProduto(produto.id).subscribe({
-      next: () => this.carregarProdutos(),
-      error: (error) => console.error('Erro ao inativar produto:', error)
+    
+    this.apiService.inativarProduto(produto.Id).subscribe({
+      next: () => {
+        this.carregarProdutos();
+      },
+      error: (error) => {
+        console.error('Erro ao inativar produto:', error);
+      }
     });
   }
 
+  fecharModal() {
+    this.mostrarModal = false;
+    this.produtoEmEdicao = null;
   
-fecharModal() {
-  this.mostrarModal = false;
-  this.produtoEmEdicao = null;
-}
+  }
 }

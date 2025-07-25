@@ -27,16 +27,16 @@ obterProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(`${this.baseUrl}/produto`);
 }
 
-adicionarProduto(produto: Produto): Observable<Produto> {
-    console.log("adicionar...")
-    return this.http.post<Produto>(`${this.baseUrl}/produto`, produto);
+adicionarProduto(produto: any): Observable<any> {
+  console.log("adicionar...");
+  return this.http.post<any>(`${this.baseUrl}/produto`, produto);
 }
 
-atualizarProduto(id: string, produto: Produto): Observable<Produto> {
-    return this.http.put<Produto>(`${this.baseUrl}/produto/${id}`, produto);
+atualizarProduto(id: string, produto: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/produto/${id}`, produto);
 }
 
-inativarProduto(id: string): Observable<void> {
+inativarProduto(id: string): Observable<any> {
     return this.http.delete<void>(`${this.baseUrl}/produto/${id}`);
 }
 

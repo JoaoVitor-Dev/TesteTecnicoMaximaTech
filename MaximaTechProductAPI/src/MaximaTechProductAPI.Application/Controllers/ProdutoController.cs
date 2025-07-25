@@ -28,11 +28,11 @@ namespace MaximaTechProductAPI.Application.Controllers
 
             var produtosDto = produtos.Select(p => new ProdutoDto
             {
-                id = p.Id.ToString(),
-                codigo = p.Codigo,
-                descricao = p.Descricao,
-                departamento = p.Departamento,
-                preco = p.Preco
+                id = p.id.ToString(),
+                codigo = p.codigo,
+                descricao = p.descricao,
+                departamento = p.departamento,
+                preco = p.preco
             });
 
             return Ok(produtos);
@@ -102,7 +102,7 @@ namespace MaximaTechProductAPI.Application.Controllers
             if (existente == null) return NotFound();
 
             await _produtoRepository.Inativar(id);
-            return Ok("Produto inativado com sucesso");
+            return Ok(new { message = "Produto inativado com sucesso" });
         }
 
     }
