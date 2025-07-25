@@ -14,7 +14,6 @@
   <ItemGroup>
     <Folder Include="Database\Seed\" />
     <Folder Include="Database\Schema\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <PropertyGroup>

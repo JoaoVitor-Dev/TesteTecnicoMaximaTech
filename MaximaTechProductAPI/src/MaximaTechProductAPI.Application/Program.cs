@@ -1,5 +1,7 @@
 using MaximaTechProductAPI.Application;
+using MaximaTechProductAPI.Core.Interfaces;
 using MaximaTechProductAPI.Infrastructure.Database;
+using MaximaTechProductAPI.Infrastructure.Repository;
 using MySql.Data.MySqlClient;
 using System.Data;
 
@@ -20,6 +22,9 @@ dbInitializer.Initialize();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
+
 
 var app = builder.Build();
 
