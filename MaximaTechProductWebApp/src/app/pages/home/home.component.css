@@ -42,30 +42,6 @@
   transition: background-color 200ms ease-in-out ;
 }
 
-.btn.novo {
-  background-color: #01D556;
-}
-
-.btn.novo:hover {
-  background-color: #0c9945;
-}
-
-.btn.editar {
-  background-color: #4E58FF;
-}
-
-.btn.editar:hover{
-  background-color: #373db6;
-}
-
-.btn.inativar {
-  background-color: #FF008D;
-}
-
-.btn.inativar:hover {
-  background-color: #bb086a;
-}
-
 app-produto {
   position: fixed;
   top: 50%;

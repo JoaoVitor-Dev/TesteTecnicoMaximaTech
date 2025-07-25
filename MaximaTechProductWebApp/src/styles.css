@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+*{
+    font-family: Arial, sans-serif;
+}
+
+.novo{
+    background-color: #01D556;
+}
+
+.novo:hover {
+  background-color: #0c9945;
+}
+
+.editar {
+  background-color: #4E58FF;
+}
+
+.editar:hover{
+  background-color: #373db6;
+}
+
+.inativar {
+  background-color: #FF008D;
+}
+
+.inativar:hover {
+  background-color: #bb086a;
+}
