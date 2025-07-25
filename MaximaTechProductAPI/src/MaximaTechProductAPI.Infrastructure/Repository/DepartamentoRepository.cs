@@ -38,7 +38,7 @@ namespace MaximaTechProductAPI.Infrastructure.Repository
 
         public async Task Inativar(Guid id)
         {
-            var sql = "UPDATE FROM Departamento SET status = 0 WHERE Id = @Id";
+            var sql = "UPDATE Departamento SET status = 0 WHERE Id = @Id";
             await _connection.ExecuteAsync(sql, new { Id = id });
         }
 

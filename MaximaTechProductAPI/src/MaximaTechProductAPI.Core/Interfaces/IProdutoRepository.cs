@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaximaTechProductAPI.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace MaximaTechProductAPI.Core.Interfaces
 {
-    internal interface IProdutoRepository
+    public interface IProdutoRepository
     {
+        Task<IEnumerable<Produto>> obterTodos();
+        Task<Produto?> obter(Guid id);
+        Task Adicionar(Produto produto);
+        Task Atualizar(Produto produto);
+        Task Inativar(Guid id);
     }
 }
